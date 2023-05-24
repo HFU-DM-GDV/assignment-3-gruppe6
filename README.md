@@ -64,7 +64,7 @@ Download and install Python 3.11.2 from https://www.python.org/downloads/
 
 To run the program, use the following command:
 ```sh
-  python [python-project_filename]
+  python hybridImaging.py
 ```
 On startup, the program loads two images from ./images/ and displays them on the left and right. 
 Now you need to set the reference points for both images. To do this choose the reference points of both images, left click the desired points on the left image, then left click the desired points on the right image. Three points must be selected in each window for the transformation to be computed. After you placed in total 6 points (3 on each image), the transformed images is shown between both images.
@@ -81,11 +81,6 @@ Following python packages have been used in this program:
 
 * [NumPy](https://numpy.org/)
 * [OpenCV](https://opencv.org/)
+* [README Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[python-project_filename]: hybridImaging.py
