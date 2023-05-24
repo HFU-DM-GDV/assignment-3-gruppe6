@@ -77,8 +77,6 @@ Finally press 'c' on your keyboard to calculate the hybrid image using the left 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Following python packages have been used in this program:
-
 * [NumPy](https://numpy.org/)
 * [OpenCV](https://opencv.org/)
 * [README Template](https://github.com/othneildrew/Best-README-Template)
