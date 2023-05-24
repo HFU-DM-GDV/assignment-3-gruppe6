@@ -6,6 +6,7 @@ img_highpass = cv.imread('./images/winnie.png', cv.IMREAD_GRAYSCALE)
 img_lowpass = cv.imread('./images/xi.png', cv.IMREAD_GRAYSCALE)
 
 # Resize the images to be of equal size
+# Highpass image is adjusted to the low pass image
 img_highpass = cv.resize(img_highpass, (img_lowpass.shape[1], img_lowpass.shape[0]))
 
 def get_frequencies(image):
@@ -13,9 +14,10 @@ def get_frequencies(image):
     Compute spectral image with a DFT.
     """
     # Convert image to floats and do dft saving as complex output
+    # complex output = complex numbers are returned
     dft = cv.dft(np.float32(image), flags=cv.DFT_COMPLEX_OUTPUT)
 
-    # Apply shift of origin from upper left corner to center of image
+    # Apply shift of origin from upper left corner to center of image (highpass frequenices outer corner, lowpass freq. inner )
     dft_shift = np.fft.fftshift(dft)
 
     # Extract magnitude and phase images
@@ -110,8 +112,9 @@ def create_hybrid_image(img1, img2):
     reconverted_lowpass = create_from_spectrum(mag_l_filtered, phase_l)
 
     # overlap images
-    alpha = 0.85  # Gewichtung für das Tiefpassbild
-    beta = 0.15   # Gewichtung für das Hochpassbild
+    # weighting for lowpass and highpass image
+    alpha = 0.85
+    beta = 0.15  
     hybrid_image = cv.addWeighted(reconverted_lowpass, alpha, reconverted_highpass, beta, 0)
     
     # Display the image
@@ -159,6 +162,7 @@ while True:
         ref_pt_src = []
         ref_pt_dst = []
         computationDone = False
+    # If the 'c' key is pressed, creat copies and load the hybrid image
     elif key == ord("c"):
         img_lowpass = clone_lowpass.copy()
         img_highpass = clone_highpass.copy()

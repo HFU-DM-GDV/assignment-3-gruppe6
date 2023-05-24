@@ -1,29 +1,91 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/lBAhmSIi)
-# Assignment #3 - Hybrid imaging
+<a name="readme-top"></a>
 
-## Task
-Implement a hybrid imaging application using Python and OpenCV. The application should load two images and create one hybrid image from those two. Check the [original sources](http://olivalab.mit.edu/hybridimage.htm) about the topic.
-Note that you need to transform one image so that it fits optimally to the other image. You can use the transformation operations from GDV Tutorials 11-13.
-Submit at least two resulting hybrid images that illustrate the effect in a nice way.
-Write a short readme how to run the code and a brief explanation (max. 200 words, German or English).
 
-## Rating
-- Low and high frequency images are correctly created (1 point)
-- Frequencies for separation of high and low is suitable (1 points)
-- Hybrid image is combined in a suitable way that works for the given image pair ([angry_man](data\images\angry_man.png),[woman](data\images\woman.png)) (1 point)
-- Image transformation so that images fit is properly implemented with a suitable user interface for manual transformation (up to 2 points)
-- Nice (self-made) hybrid images are submitted (up to 2 points)
-- Code is well readable, structured and documented (up to 2 points)
-- Readme is well written and contains all steps to install and run the code (1 point)
-- BONUS: Impressive hybrid images and/or a cool or automated user interface. (Up to 2 points)
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-## Acceptance criteria
-- Push code (.py file) and readme.md file to the Github Classroom repository in time.
-- Script runs without changes. One output image is generated.
-- In the source code, it is clearly visible that the hybrid image is computed.
 
-## Pass criteria
-- The assignment is passed, if 5 or more points are reached.
 
-## References
-The images are copied from the [Siggraph talk slides](http://olivalab.mit.edu/publications/Talk_Hybrid_Siggraph06.pdf).
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+This code creats a hybrid image by combining a lowpass and highpass filtered image. The resulting hybrid image is interprented differently at different viewing distances. 
+This task is edited by Nico Berndt, Vadim Borejko and Melanie Müller.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+Follow these steps to get the porject running on your computer.
+
+### Prerequisites
+
+This project needs Python 3.11.2 or higher to run.
+Download and install Python 3.11.2 from https://www.python.org/downloads/
+
+
+### Installation
+
+1. Clone/download the repository
+2. Make sure your pip is up-to-date
+   ```sh
+   python -m pip install --upgrade pip
+   ```
+3. Install dependencies
+   ```sh
+   python -m pip install .
+   ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+To run the program, use the following command:
+```sh
+  python [python-project_filename]
+```
+On startup, the program loads two images from ./images/ and displays them on the left and right. 
+Now you need to set the reference points for both images. To do this choose the reference points of both images, left click the desired points on the left image, then left click the desired points on the right image. Three points must be selected in each window for the transformation to be computed. After you placed in total 6 points (3 on each image), the transformed images is shown between both images.
+Finally press 'c' on your keyboard to calculate the hybrid image using the left image as the highpass and right image as the lowpass. A new windows containing the hybrid image should show after it finished calculating. Press 'r' if you want to reset the transform- and hybrid- images and begin assigning new reference points. Press 'q' to quit the program.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+Following python packages have been used in this program:
+
+* [NumPy](https://numpy.org/)
+* [OpenCV](https://opencv.org/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[python-project_filename]: hybridImaging.py
