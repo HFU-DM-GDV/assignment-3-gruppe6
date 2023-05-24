@@ -5,13 +5,13 @@ import cv2 as cv
 img_highpass = cv.imread('./images/winnie.png', cv.IMREAD_GRAYSCALE)
 img_lowpass = cv.imread('./images/xi.png', cv.IMREAD_GRAYSCALE)
 
-# Resize the images to be of equal size
+# Resize the image to be of equal size
 # Highpass image is adjusted to the low pass image
 img_highpass = cv.resize(img_highpass, (img_lowpass.shape[1], img_lowpass.shape[0]))
 
 def get_frequencies(image):
     """
-    Compute spectral image with a DFT.
+    Calculation of the spectral image with a DFT. 
     """
     # Convert image to floats and do dft saving as complex output
     # complex output = complex numbers are returned
@@ -24,6 +24,7 @@ def get_frequencies(image):
     mag, phase = cv.cartToPolar(dft_shift[:, :, 0], dft_shift[:, :, 1])
 
     # Get spectrum for viewing only
+    # Needed for the human viewing to improve the visual representation of the spectrum
     spec = (1 / 20) * np.log(mag)
 
     # Return the resulting image (as well as the magnitude and
@@ -32,7 +33,11 @@ def get_frequencies(image):
 
 
 def create_from_spectrum(mag, phase):
+    """
+    Reverse the spectral image with a IDFT. 
+    """
     # Convert magnitude and phase into cartesian real and imaginary components
+    # polar to cartesian
     real, imag = cv.polarToCart(mag, phase)
 
     # Combine cartesian components into one complex image
@@ -54,6 +59,9 @@ def create_from_spectrum(mag, phase):
     return img_back
 
 def click_src(event, x, y, flags, param):
+    """
+    Creates the point in the source image  
+    """
     # Grab references to the global variables
     global ref_pt_src
 
@@ -70,6 +78,9 @@ def click_src(event, x, y, flags, param):
 
 
 def click_dst(event, x, y, flags, param):
+    """
+    Creates the point in the destination image  
+    """
     # Grab references to the global variables
     global ref_pt_dst
 
@@ -85,36 +96,46 @@ def click_dst(event, x, y, flags, param):
         cv.imshow("Lowpass", dst_transform)
 
 def create_hybrid_image(img1, img2):
+    """
+    Highpass and lowpass filtered image are created and combined  
+    """
     # Compute the magnitude and phase of the DFT for the highpass image
     result_highpass, mag_h, phase_h = get_frequencies(img2)
 
-    # Highpassfilter anwenden
+    # Apply highpassfilter
     row, col = result_highpass.shape
     crow, ccol = int(row / 2), int(col / 2)
     result_highpass[crow - 30:crow + 30, ccol - 30:ccol + 30] = 0
 
-    reconverted_highpass = create_from_spectrum(mag_h, phase_h)
+    # Apply frequency filtering to the highpass spectrum
+    mag_h_filtered = mag_h * result_highpass
+
+    reconverted_highpass = create_from_spectrum(mag_h_filtered, phase_h)
 
     # Compute the magnitude and phase of the DFT for the lowpass image
     result_lowpass, mag_l, phase_l = get_frequencies(img1)
 
-    # Tiefpassfilter anwenden
+    # Apply lowpassfilter
     rows, cols = result_lowpass.shape
-    crow, ccol = rows // 2, cols // 2  # Zentrum des Bildes
-    d = 30  # Radius des Tiefpassfilters
+    # center of the image
+    crow, ccol = rows // 2, cols // 2
+    # radius of the lowpassfilter
+    d = 30 
     # draw black boxes around middle
     result_lowpass[0:rows, 0:ccol - d] = 0
     result_lowpass[0:rows, ccol + d:cols] = 0
     result_lowpass[0:crow - d, 0:cols] = 0
     result_lowpass[crow + d:rows, 0:cols] = 0
+    # Apply frequency filtering to the lowpass spectrum
     mag_l_filtered = mag_l * result_lowpass
 
     reconverted_lowpass = create_from_spectrum(mag_l_filtered, phase_l)
 
     # overlap images
     # weighting for lowpass and highpass image
-    alpha = 0.85
-    beta = 0.15  
+    alpha = 0.5
+    beta = 1 - alpha 
+    # addWeighted = combines the two filtered images
     hybrid_image = cv.addWeighted(reconverted_lowpass, alpha, reconverted_highpass, beta, 0)
     
     # Display the image
